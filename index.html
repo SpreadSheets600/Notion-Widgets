@@ -24,58 +24,51 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             padding: 30px;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             text-align: center;
             transition: transform 0.3s ease;
         }
         .card:hover {
             transform: translateY(-5px);
         }
-        .greet {
+        .info-line {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .greeting {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
             color: #e94560;
+            margin-right: 10px;
         }
         .quote {
             font-style: italic;
             font-size: 1rem;
-            margin-bottom: 20px;
             color: #a7a7a7;
         }
-        .date {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        .clock {
-            font-size: 2.5rem;
-            font-weight: 600;
-        }
-        .time {
-            display: inline-block;
-            min-width: 60px;
-        }
-        .colon {
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        @media (max-width: 480px) {
+            .info-line {
+                font-size: 1rem;
+            }
+            .greeting {
+                font-size: 1.2rem;
+            }
+            .quote {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="greet" id="greet"></div>
-        <div class="quote" id="quote"></div>
-        <div class="date" id="date"></div>
-        <div class="clock">
-            <span class="time" id="hour"></span>
-            <span class="colon">:</span>
-            <span class="time" id="min"></span>
-            <span class="colon">:</span>
-            <span class="time" id="sec"></span>
+        <div class="info-line">
+            <span class="greeting" id="greet"></span>
+            <span id="date-time"></span>
         </div>
+        <div class="quote" id="quote"></div>
     </div>
 
     <script>
@@ -95,22 +88,223 @@
             let greet = 'Good Morning';
             if (hours >= 12 && hours <= 17) greet = 'Good Afternoon';
             else if (hours > 17) greet = 'Good Evening';
-            document.getElementById('greet').textContent = greet;
+            document.getElementById('greet').textContent = greet + ',';
+
+            // Update date and time
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('date-time').textContent = now.toLocaleString('en-US', options);
 
             // Update quote
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quote').textContent = `"${randomQuote}"`;
+        }
 
-            // Update date
-            document.getElementById('date').textContent = now.toDateString();
+        updateDateTime();
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Greeting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .info-line {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .greeting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #e94560;
+            margin-right: 10px;
+        }
+        .quote {
+            font-style: italic;
+            font-size: 1rem;
+            color: #a7a7a7;
+        }
+        @media (max-width: 480px) {
+            .info-line {
+                font-size: 1rem;
+            }
+            .greeting {
+                font-size: 1.2rem;
+            }
+            .quote {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="info-line">
+            <span class="greeting" id="greet"></span>
+            <span id="date-time"></span>
+        </div>
+        <div class="quote" id="quote"></div>
+    </div>
 
-            // Update time
-            const formatTime = (time) => time.toString().padStart(2, '0');
-            document.getElementById('hour').textContent = formatTime(hours % 12 || 12);
-            document.getElementById('min').textContent = formatTime(now.getMinutes());
-            document.getElementById('sec').textContent = formatTime(now.getSeconds());
+    <script>
+        const quotes = [
+            "The only way to do great work is to love what you do.",
+            "Believe you can and you're halfway there.",
+            "The future belongs to those who believe in the beauty of their dreams.",
+            "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+            "The only limit to our realization of tomorrow will be our doubts of today."
+        ];
 
-            setTimeout(updateDateTime, 1000);
+        function updateDateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+
+            // Update greeting
+            let greet = 'Good Morning';
+            if (hours >= 12 && hours <= 17) greet = 'Good Afternoon';
+            else if (hours > 17) greet = 'Good Evening';
+            document.getElementById('greet').textContent = greet + ',';
+
+            // Update date and time
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('date-time').textContent = now.toLocaleString('en-US', options);
+
+            // Update quote
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').textContent = `"${randomQuote}"`;
+        }
+
+        updateDateTime();
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Greeting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .info-line {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .greeting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #e94560;
+            margin-right: 10px;
+        }
+        .quote {
+            font-style: italic;
+            font-size: 1rem;
+            color: #a7a7a7;
+        }
+        @media (max-width: 480px) {
+            .info-line {
+                font-size: 1rem;
+            }
+            .greeting {
+                font-size: 1.2rem;
+            }
+            .quote {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="info-line">
+            <span class="greeting" id="greet"></span>
+            <span id="date-time"></span>
+        </div>
+        <div class="quote" id="quote"></div>
+    </div>
+
+    <script>
+        const quotes = [
+            "The only way to do great work is to love what you do.",
+            "Believe you can and you're halfway there.",
+            "The future belongs to those who believe in the beauty of their dreams.",
+            "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+            "The only limit to our realization of tomorrow will be our doubts of today."
+        ];
+
+        function updateDateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+
+            // Update greeting
+            let greet = 'Good Morning';
+            if (hours >= 12 && hours <= 17) greet = 'Good Afternoon';
+            else if (hours > 17) greet = 'Good Evening';
+            document.getElementById('greet').textContent = greet + ',';
+
+            // Update date and time
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('date-time').textContent = now.toLocaleString('en-US', options);
+
+            // Update quote
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').textContent = `"${randomQuote}"`;
         }
 
         updateDateTime();
