@@ -1,147 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Bebas+Neue&family=Lobster&family=Roboto:400,700" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greeting Card</title>
+    <title>Aesthetic Greeting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* CSS RESETS */
         body {
-            background-color: #191919;
+            background-color: #1a1a2e;
             color: #fff;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
             display: flex;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
-            line-height: 1.6;
-        }
-        /* CSS START */
-        .full-table {
-            display: table;
-            height: 100%;
-            width: 100%;
-        }
-        .table-cell {
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .card {
-            padding: 20px;
-            border-radius: 10px;
-            background: #3d3d3d;
-            width: 85vw;
-            max-width: 600px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
-        .clock, .date, .greet, .quote {
-            display: block;
-            font-family: 'Bebas Neue', cursive;
-            font-size: 2em;
-            margin: 10px 0;
+        .card:hover {
+            transform: translateY(-5px);
         }
         .greet {
             font-family: 'Dancing Script', cursive;
             font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #e94560;
         }
         .quote {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
-            color: #d3d3d3;
+            font-style: italic;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #a7a7a7;
         }
-        .clock .time {
-            display: inline-block;
-            min-width: 37px;
+        .date {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
         }
-        .clock .colon {
-            font-size: 1.1em;
+        .clock {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+        .time {
             display: inline-block;
+            min-width: 60px;
+        }
+        .colon {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="full-table">
-        <div class="table-cell">
-            <div class="card">
-                <div class="greet" id="greet"></div>
-                <div class="quote" id="quote"></div>
-                <div class="date" id="date"></div>
-                <div class="clock">
-                    <div class="time" id="hour"></div>
-                    <div class="colon">:</div>
-                    <div class="time" id="min"></div>
-                    <div class="colon">:</div>
-                    <div class="time" id="sec"></div>
-                </div>
-            </div>
+    <div class="card">
+        <div class="greet" id="greet"></div>
+        <div class="quote" id="quote"></div>
+        <div class="date" id="date"></div>
+        <div class="clock">
+            <span class="time" id="hour"></span>
+            <span class="colon">:</span>
+            <span class="time" id="min"></span>
+            <span class="colon">:</span>
+            <span class="time" id="sec"></span>
         </div>
     </div>
+
     <script>
-        function date() {
-            var today = new Date();
-            document.getElementById('date').innerHTML = today.toDateString();
+        const quotes = [
+            "The only way to do great work is to love what you do.",
+            "Believe you can and you're halfway there.",
+            "The future belongs to those who believe in the beauty of their dreams.",
+            "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+            "The only limit to our realization of tomorrow will be our doubts of today."
+        ];
+
+        function updateDateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+
+            // Update greeting
+            let greet = 'Good Morning';
+            if (hours >= 12 && hours <= 17) greet = 'Good Afternoon';
+            else if (hours > 17) greet = 'Good Evening';
+            document.getElementById('greet').textContent = greet;
+
+            // Update quote
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').textContent = `"${randomQuote}"`;
+
+            // Update date
+            document.getElementById('date').textContent = now.toDateString();
+
+            // Update time
+            const formatTime = (time) => time.toString().padStart(2, '0');
+            document.getElementById('hour').textContent = formatTime(hours % 12 || 12);
+            document.getElementById('min').textContent = formatTime(now.getMinutes());
+            document.getElementById('sec').textContent = formatTime(now.getSeconds());
+
+            setTimeout(updateDateTime, 1000);
         }
 
-        function clock() {
-            var today = new Date();
-            var hour = zeros(twelveHour(today.getHours()));
-            var minutes = zeros(today.getMinutes());
-            var seconds = zeros(today.getSeconds());
-            seconds += today.getHours() >= 12 ? ' PM' : ' AM';
-
-            var hrs = today.getHours();
-            var greet;
-            if (hrs < 12)
-                greet = 'Good Morning';
-            else if (hrs >= 12 && hrs < 17)
-                greet = 'Good Afternoon';
-            else
-                greet = 'Good Evening';
-
-            document.getElementById('greet').innerHTML = greet;
-            document.getElementById('hour').innerHTML = hour;
-            document.getElementById('min').innerHTML = minutes;
-            document.getElementById('sec').innerHTML = seconds;
-        }
-
-        function twelveHour(hour) {
-            if (hour > 12) {
-                return hour -= 12;
-            } else if (hour === 0) {
-                return hour = 12;
-            } else {
-                return hour;
-            }
-        }
-
-        function zeros(num) {
-            return num < 10 ? '0' + num : num;
-        }
-
-        function dateTime() {
-            date();
-            clock();
-            setTimeout(dateTime, 500);
-        }
-
-        function randomQuote() {
-            var quotes = [
-                "Believe you can and you're halfway there.",
-                "The only way to do great work is to love what you do.",
-                "Success is not the key to happiness. Happiness is the key to success.",
-                "Your limitation—it's only your imagination.",
-                "Dream it. Wish it. Do it."
-            ];
-            var quote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quote').innerHTML = quote;
-        }
-
-        dateTime();
-        randomQuote();
+        updateDateTime();
     </script>
 </body>
 </html>
