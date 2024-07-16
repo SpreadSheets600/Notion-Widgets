@@ -1,110 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aesthetic Greeting</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #191919;
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .card {
-            background: #262829;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 90%;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .info-line {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .greeting {
-            display: inline;
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: #e94560;
-            padding-right: 4rem;
-        }
-        .quote {
-            font-style: italic;
-            font-size: 1.5rem;
-            color: #a7a7a7;
-        }
-
+      body {
+        background-color: #191919;
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .card {
+        background: #262829;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        padding: 1px;
+        width: 90%;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .info-line {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .greeting {
+        display: inline;
+        font-family: "Dancing Script", cursive;
+        font-size: 3rem;
+        color: #e94560;
+        padding-right: 4rem;
+      }
+      .quote {
+        font-style: italic;
+        font-size: 1.5rem;
+        color: #a7a7a7;
+      }
+      .date-time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        font-weight: 600;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="card">
-        <div class="info-line">
-            <span class="greeting" id="greet"></span>
-            <span id="date-time"></span>
-        </div>
+      <div class="info-line">
+        <span class="date-time">
+          <span class="greeting" id="greet"></span>
+          <span id="day"></span>
+          <span id="date"></span>
+          <span id="time"></span>
+        </span>
         <div class="quote" id="quote"></div>
+      </div>
     </div>
 
     <script>
-        const quotes = [
-            "The only way to do great work is to love what you do.",
-            "Believe you can and you're halfway there.",
-            "The future belongs to those who believe in the beauty of their dreams.",
-            "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-            "The only limit to our realization of tomorrow will be our doubts of today."
+      const quotes = [
+        "The only way to do great work is to love what you do.",
+        "Believe you can and you're halfway there.",
+        "The future belongs to those who believe in the beauty of their dreams.",
+        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+        "The only limit to our realization of tomorrow will be our doubts of today.",
+      ];
+
+      function updateDateTime() {
+        const now = new Date();
+        const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        const months = [
+          "JAN",
+          "FEB",
+          "MAR",
+          "APR",
+          "MAY",
+          "JUN",
+          "JUL",
+          "AUG",
+          "SEP",
+          "OCT",
+          "NOV",
+          "DEC",
         ];
 
-        function updateDateTime() {
-            const now = new Date();
-            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-            
-            const day = days[now.getDay()];
-            const month = months[now.getMonth()];
-            const date = now.getDate();
-            const year = now.getFullYear();
-            
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
-            hours = hours.toString().padStart(2, '0');
+        const day = days[now.getDay()];
+        const month = months[now.getMonth()];
+        const date = now.getDate();
+        const year = now.getFullYear();
 
-            // Update greeting
-            let greet = 'Good Morning';
-            if (now.getHours() >= 12 && now.getHours() <= 17) greet = 'Good Afternoon';
-            else if (now.getHours() > 17) greet = 'Good Evening';
-            document.getElementById('greet').textContent = greet;
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, "0");
+        const seconds = now.getSeconds().toString().padStart(2, "0");
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        hours = hours.toString().padStart(2, "0");
 
-            const dateTimeString = `${day} ${month} ${date} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
-            document.getElementById('date-time').textContent = dateTimeString;
-        }
+        // Update greeting
+        let greet = "Good Morning";
+        if (now.getHours() >= 12 && now.getHours() <= 17)
+          greet = "Good Afternoon";
+        else if (now.getHours() > 17) greet = "Good Evening";
+        document.getElementById("greet").textContent = greet;
 
-        function updateQuote() {
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quote').textContent = `"${randomQuote}"`;
-        }
+        // Update date and time with separate spans
+        document.getElementById("day").textContent = day;
+        document.getElementById(
+          "date"
+        ).textContent = `${month} ${date} ${year}`;
+        document.getElementById(
+          "time"
+        ).textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+      }
 
-        updateDateTime();
-        updateQuote();
-        setInterval(updateDateTime, 1000);
+      function updateQuote() {
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById("quote").textContent = `"${randomQuote}"`;
+      }
+
+      updateDateTime();
+      updateQuote();
+      setInterval(updateDateTime, 1000);
     </script>
-</body>
+  </body>
 </html>
