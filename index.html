@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #1a1a2e;
+            background-color: #191919;
             color: #fff;
             font-family: 'Poppins', sans-serif;
             line-height: 1.6;
@@ -19,12 +19,11 @@
             min-height: 100vh;
         }
         .card {
-            background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+            background: #262829;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             padding: 30px;
             width: 90%;
-            max-width: 600px;
             text-align: center;
             transition: transform 0.3s ease;
         }
@@ -32,34 +31,24 @@
             transform: translateY(-5px);
         }
         .info-line {
-            font-size: 1.2rem;
+            font-size: 2rem;
             margin-bottom: 20px;
-            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .greeting {
+            display: inline;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
+            font-size: 3rem;
             color: #e94560;
-            margin-right: 10px;
+            padding-right: 4rem;
         }
         .quote {
             font-style: italic;
-            font-size: 1rem;
+            font-size: 1.5rem;
             color: #a7a7a7;
         }
-        @media (max-width: 480px) {
-            .info-line {
-                font-size: 1rem;
-            }
-            .greeting {
-                font-size: 1.2rem;
-            }
-            .quote {
-                font-size: 0.9rem;
-            }
-        }
+
     </style>
 </head>
 <body>
@@ -82,24 +71,40 @@
 
         function updateDateTime() {
             const now = new Date();
-            const hours = now.getHours();
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            
+            const day = days[now.getDay()];
+            const month = months[now.getMonth()];
+            const date = now.getDate();
+            const year = now.getFullYear();
+            
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = hours.toString().padStart(2, '0');
 
             // Update greeting
             let greet = 'Good Morning';
-            if (hours >= 12 && hours <= 17) greet = 'Good Afternoon';
-            else if (hours > 17) greet = 'Good Evening';
-            document.getElementById('greet').textContent = greet + ',';
+            if (now.getHours() >= 12 && now.getHours() <= 17) greet = 'Good Afternoon';
+            else if (now.getHours() > 17) greet = 'Good Evening';
+            document.getElementById('greet').textContent = greet;
 
-            // Update date and time
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            document.getElementById('date-time').textContent = now.toLocaleString('en-US', options);
+            const dateTimeString = `${day} ${month} ${date} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('date-time').textContent = dateTimeString;
+        }
 
-            // Update quote
+        function updateQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quote').textContent = `"${randomQuote}"`;
         }
 
         updateDateTime();
+        updateQuote();
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>
