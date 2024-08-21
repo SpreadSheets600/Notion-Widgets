@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aesthetic Time Widget</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Consolas&family=Playfair+Display:ital@0;1&display=swap"
       rel="stylesheet"
     />
     <style>
       body {
         margin: 0;
         padding: 0;
-        font-family: "Consolas", sans-serif;
+        font-family: "Consolas", monospace;
         background-image: url("Image.jpg");
         background-size: cover;
         background-position: center;
@@ -21,30 +21,30 @@
         align-items: center;
         height: 100vh;
         color: black;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
       }
 
       .widget {
         text-align: center;
-        padding: 20px;
-        width: 350px;
+        padding: 30px;
+        width: 380px;
         background: rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
+        border-radius: 1px;
         backdrop-filter: blur(20px);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
       .time {
-        font-size: 52px;
+        font-size: 56px;
         font-weight: 700;
         letter-spacing: 3px;
         margin-bottom: 10px;
         color: #ffffff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
       }
 
       .date {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 300;
         letter-spacing: 2px;
         margin-bottom: 20px;
@@ -52,24 +52,37 @@
       }
 
       .day {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 400;
         text-transform: uppercase;
         letter-spacing: 4px;
         margin-bottom: 5px;
-        color: #ffd700;
+        color: #ffffff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      .quote-container {
+        margin-top: 5px;
+        padding: 5px;
+        border-radius: 1px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #b0c4de;
       }
 
       .quote {
-        font-size: 16px;
+        font-family: "Playfair Display", serif;
+        font-size: 18px;
         font-style: italic;
+        line-height: 1.6;
+        margin-bottom: 5px;
+      }
+
+      .author {
+        font-family: "Consolas", monospace;
+        font-size: 14px;
+        text-align: right;
+        color: #ffffff;
         margin-top: 10px;
-        max-width: 500px;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(0, 0, 0, 0.3);
-        color: #b0c4de;
-        text-shadow: none;
       }
     </style>
   </head>
@@ -78,14 +91,30 @@
       <div class="day" id="day"></div>
       <div class="date" id="date"></div>
       <div class="time" id="time"></div>
-      <div class="quote" id="quote"></div>
+      <div class="quote-container">
+        <div class="quote" id="quote"></div>
+        <div class="author" id="author"></div>
+      </div>
     </div>
     <script>
       const quotes = [
-        "The future belongs to those who believe in the beauty of their dreams.",
-        "Strive not to be a success, but rather to be of value.",
-        "Every moment is a fresh beginning.",
-        "Believe you can and you're halfway there.",
+        {
+          text: "The future belongs to those who believe in the beauty of their dreams.",
+          author: "Eleanor Roosevelt",
+        },
+        {
+          text: "Strive not to be a success, but rather to be of value.",
+          author: "Albert Einstein",
+        },
+        { text: "Every moment is a fresh beginning.", author: "T.S. Eliot" },
+        {
+          text: "Believe you can and you're halfway there.",
+          author: "Theodore Roosevelt",
+        },
+        {
+          text: "The only way to do great work is to love what you do.",
+          author: "Steve Jobs",
+        },
       ];
 
       function updateTimeAndDate() {
@@ -109,11 +138,16 @@
         document.getElementById("time").textContent = time;
       }
 
+      function formatQuote(text) {
+        return text.replace(/,\s+/g, ",<br>").replace(/\s+and\s+/g, "<br>and ");
+      }
+
       function setRandomQuote() {
         const randomIndex = Math.floor(Math.random() * quotes.length);
-        document.getElementById(
-          "quote"
-        ).textContent = `${quotes[randomIndex]}`;
+        const selectedQuote = quotes[randomIndex];
+        document.getElementById("quote").innerHTML = `${formatQuote(
+          selectedQuote.text
+        )}`;
       }
 
       updateTimeAndDate();
